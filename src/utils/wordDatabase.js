@@ -12,82 +12,82 @@ export const wordDatabase = [
     "Screwdriver", "Wrench",
 
     // Food & Drinks (80)
-    "Pizza", "Burger", "Hotdog", "Sandwich", "Taco", "Burrito", "Sushi", "Ramen",
-    "Pasta", "Lasagna", "Spaghetti", "Ravioli", "Risotto", "Paella", "Curry", "Stir-fry",
-    "Steak", "Chicken", "Salmon", "Shrimp", "Lobster", "Crab", "Oyster", "Caviar",
-    "Salad", "Soup", "Chowder", "Stew", "Chili", "Nachos", "Quesadilla", "Enchilada",
-    "Pancake", "Waffle", "Crepe", "Donut", "Croissant", "Bagel", "Muffin", "Scone",
+    "Pizza", "Burger", "Hotdog", "Sandwich", "Taco", "Sushi", "Ramen",
+    "Pasta", "Lasagna", "Spaghetti",
+    "Steak", "Chicken", "Lobster", "Crab", "Caviar",
+    "Salad", "Soup", "Chili", "Nachos",
+    "Pancake", "Waffle", "Donut", "Croissant", "Muffin",
     "Cookie", "Brownie", "Cupcake", "Cake", "Pie", "Tart", "Cheesecake", "Tiramisu",
-    "Ice Cream", "Gelato", "Sorbet", "Popsicle", "Milkshake", "Smoothie", "Latte", "Cappuccino",
+    "Ice Cream", "Gelato", "Popsicle", "Milkshake", "Smoothie", "Latte", "Cappuccino",
     "Espresso", "Mocha", "Tea", "Juice", "Soda", "Lemonade", "Cocktail", "Wine",
     "Beer", "Champagne", "Whiskey", "Vodka", "Rum", "Tequila", "Gin", "Brandy",
     "Chocolate", "Candy", "Gummy Bears", "Lollipop", "Caramel", "Fudge", "Marshmallow", "Popcorn",
 
     // Places (60)
     "Airport", "Hospital", "School", "University", "Library", "Museum", "Gallery", "Theater",
-    "Cinema", "Stadium", "Arena", "Gym", "Park", "Playground", "Beach", "Mountain",
-    "Forest", "Desert", "Island", "Volcano", "Canyon", "Waterfall", "River", "Lake",
-    "Ocean", "Jungle", "Savanna", "Tundra", "Glacier", "Cave", "Castle", "Palace",
-    "Temple", "Mosque", "Church", "Cathedral", "Monastery", "Pyramid", "Lighthouse", "Bridge",
-    "Tunnel", "Subway", "Train Station", "Bus Stop", "Harbor", "Marina", "Dock", "Pier",
-    "Restaurant", "Cafe", "Bakery", "Supermarket", "Mall", "Boutique", "Market", "Bazaar",
-    "Hotel", "Motel", "Hostel", "Resort",
+    "Cinema", "Stadium", "Gym", "Park", "Playground", "Beach", "Mountain",
+    "Forest", "Desert", "Island", "Volcano", "Waterfall", "River", "Lake",
+    "Ocean", "Jungle", "Glacier", "Cave", "Castle", "Palace",
+    "Temple", "Mosque", "Church", "Pyramid", "Lighthouse", "Bridge",
+    "Tunnel", "Subway", "Train Station", "Bus Stop",
+    "Restaurant", "Cafe", "Bakery", "Supermarket", "Mall", "Market", "Bazaar",
+    "Hotel", "Hostel", "Resort",
 
     // Activities & Sports (50)
     "Swimming", "Diving", "Surfing", "Skiing", "Snowboarding", "Skateboarding", "Cycling", "Running",
     "Jogging", "Hiking", "Climbing", "Camping", "Fishing", "Hunting", "Archery", "Bowling",
     "Golf", "Tennis", "Badminton", "Volleyball", "Basketball", "Football", "Soccer", "Baseball",
-    "Cricket", "Rugby", "Hockey", "Boxing", "Wrestling", "Karate", "Judo", "Taekwondo",
-    "Yoga", "Pilates", "Dancing", "Ballet", "Salsa", "Tango", "Breakdancing", "Painting",
-    "Drawing", "Sculpting", "Photography", "Gardening", "Cooking", "Baking", "Knitting", "Sewing",
+    "Cricket", "Rugby", "Hockey", "Boxing", "Wrestling", "Karate",
+    "Yoga", "Dancing", "Breakdancing", "Painting",
+    "Drawing", "Photography", "Gardening", "Cooking", "Baking", "Sewing",
     "Reading", "Writing",
 
     // Professions (50)
-    "Doctor", "Nurse", "Surgeon", "Dentist", "Pharmacist", "Veterinarian", "Teacher", "Professor",
+    "Doctor", "Nurse", "Surgeon", "Dentist", "Pharmacist", "Teacher", "Professor",
     "Scientist", "Engineer", "Architect", "Designer", "Artist", "Musician", "Singer", "Dancer",
     "Actor", "Director", "Producer", "Writer", "Journalist", "Reporter", "Photographer", "Chef",
     "Baker", "Waiter", "Bartender", "Pilot", "Flight Attendant", "Captain", "Sailor", "Firefighter",
-    "Police Officer", "Detective", "Lawyer", "Judge", "Accountant", "Banker", "Economist", "Programmer",
+    "Police Officer", "Detective", "Lawyer", "Judge", "Accountant", "Banker", "Programmer",
     "Developer", "Analyst", "Manager", "CEO", "Entrepreneur", "Farmer", "Gardener", "Mechanic",
     "Electrician", "Plumber",
 
     // Household Items (40)
     "Sofa", "Chair", "Table", "Desk", "Bed", "Mattress", "Dresser", "Wardrobe",
     "Closet", "Shelf", "Cabinet", "Drawer", "Door", "Window", "Roof", "Floor",
-    "Ceiling", "Wall", "Stairs", "Elevator", "Balcony", "Porch", "Garage", "Basement",
-    "Attic", "Kitchen", "Bathroom", "Bedroom", "Living Room", "Dining Room", "Oven", "Stove",
+    "Ceiling", "Wall", "Stairs", "Elevator", "Balcony", "Garage", "Basement",
+    "Kitchen", "Bathroom", "Bedroom", "Living Room", "Dining Room", "Oven", "Stove",
     "Dishwasher", "Washing Machine", "Dryer", "Iron", "Broom", "Mop", "Bucket", "Trash Can",
 
     // Technology (40)
     "Smartphone", "Tablet", "Computer", "Keyboard", "Mouse", "Monitor", "Printer", "Scanner",
-    "Router", "Modem", "Speaker", "Earbuds", "Charger", "Battery", "USB Drive", "Hard Drive",
-    "SSD", "RAM", "Processor", "Motherboard", "Graphics Card", "Webcam", "Drone", "Robot",
+    "Router", "Speaker", "Earbuds", "Charger", "Battery", "USB Drive", "Hard Drive",
+    "Processor", "Motherboard", "Graphics Card", "Webcam", "Drone", "Robot",
     "Smartwatch", "Fitness Tracker", "VR Headset", "Gaming Console", "Controller", "Joystick",
     "Remote Control", "Projector", "Screen", "Satellite", "Antenna", "Radio", "Walkie-Talkie", "GPS",
-    "Radar", "Sonar",
+    "Radar",
 
     // Vehicles (30)
     "Car", "Truck", "Van", "Bus", "Motorcycle", "Scooter", "Bicycle", "Tricycle",
     "Train", "Subway", "Tram", "Monorail", "Airplane", "Helicopter", "Jet", "Rocket",
-    "Spaceship", "Boat", "Ship", "Yacht", "Sailboat", "Canoe", "Kayak", "Raft",
-    "Submarine", "Hovercraft", "Tank", "Ambulance", "Fire Truck", "Police Car",
+    "Spaceship", "Boat", "Ship", "Yacht", "Sailboat", "Kayak", "Raft",
+    "Submarine", "Tank", "Ambulance", "Fire Truck", "Police Car",
 
     // Nature & Weather (30)
     "Sun", "Moon", "Star", "Planet", "Comet", "Meteor", "Cloud", "Rain",
     "Snow", "Hail", "Fog", "Mist", "Wind", "Storm", "Thunder", "Lightning",
     "Rainbow", "Tornado", "Hurricane", "Earthquake", "Tsunami", "Avalanche", "Flood", "Drought",
-    "Sunrise", "Sunset", "Eclipse", "Aurora", "Tide", "Wave",
+    "Sunrise", "Sunset", "Eclipse", "Tide", "Wave",
 
     // Clothing & Accessories (40)
     "Shirt", "T-Shirt", "Blouse", "Sweater", "Hoodie", "Jacket", "Coat", "Blazer",
     "Pants", "Jeans", "Shorts", "Skirt", "Dress", "Suit", "Tie", "Bow Tie",
     "Scarf", "Gloves", "Mittens", "Hat", "Cap", "Beanie", "Helmet", "Crown",
     "Socks", "Stockings", "Shoes", "Sneakers", "Boots", "Sandals", "Slippers", "High Heels",
-    "Belt", "Suspenders", "Ring", "Necklace", "Bracelet", "Earrings", "Brooch", "Pendant",
+    "Belt", "Suspenders", "Ring", "Necklace", "Bracelet", "Earrings", "Pendant",
 
     // Abstract Concepts (30)
     "Love", "Happiness", "Joy", "Sadness", "Anger", "Fear", "Surprise", "Disgust",
-    "Pride", "Shame", "Guilt", "Envy", "Jealousy", "Hope", "Faith", "Trust",
+    "Pride", "Shame", "Guilt", "Jealousy", "Hope", "Faith", "Trust",
     "Courage", "Bravery", "Wisdom", "Knowledge", "Intelligence", "Creativity", "Imagination", "Memory",
     "Dream", "Nightmare", "Fantasy", "Reality", "Truth", "Lie",
 
@@ -98,8 +98,8 @@ export const wordDatabase = [
     "Video Game", "Board Game", "Card Game", "Puzzle", "Riddle", "Quiz",
 
     // Miscellaneous (20)
-    "Diamond", "Gold", "Silver", "Bronze", "Platinum", "Pearl", "Ruby", "Emerald",
-    "Sapphire", "Crystal", "Marble", "Granite", "Limestone", "Sandstone", "Clay", "Concrete",
+    "Diamond", "Gold", "Silver", "Bronze", "Platinum", "Pearl", "Ruby",
+    "Crystal", "Marble", "Clay", "Concrete",
     "Brick", "Wood", "Metal", "Plastic"
 ];
 

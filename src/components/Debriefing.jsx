@@ -28,15 +28,20 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
                 </h2>
             </div>
 
-            <div className="reveal-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: 'var(--spacing-lg)',
-                marginBottom: 'var(--spacing-xl)'
-            }}>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, max-content))', // shrink to content
+                    justifyContent: 'center',  // center the grid in the viewport
+                    gap: 'var(--spacing-lg)',
+                    marginBottom: 'var(--spacing-xl)',
+                    paddingLeft: 'var(--spacing-md)',
+                    paddingRight: 'var(--spacing-md)',
+                }}
+                >
                 {/* Spy Reveal */}
                 <div className="card-result" style={{
-                    background: '#FEF2F2', /* Light Red */
+                    background: '#FEF2F2',
                     border: '4px solid var(--danger)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '2rem',
@@ -64,7 +69,7 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
 
                 {/* Word Reveal */}
                 <div className="card-result" style={{
-                    background: '#F3F4F6', /* Light Gray */
+                    background: '#F3F4F6',
                     border: '4px solid var(--primary)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '2rem',
