@@ -186,24 +186,6 @@ function App() {
                                 One of you is the Spy!
                             </p>
 
-                            {allPlayersRevealed && (
-                                <div style={{
-                                    textAlign: 'center',
-                                    marginBottom: 'var(--spacing-md)'
-                                }}>
-                                    <button
-                                        className="btn btn-primary btn-lg"
-                                        onClick={handleStartMission}
-                                        style={{
-                                            fontSize: '1.25rem',
-                                            animation: 'pulse 2s ease-in-out infinite'
-                                        }}
-                                    >
-                                        🚀 Start Game
-                                    </button>
-                                </div>
-                            )}
-
                             <div className="player-grid">
                                 {gameState.players.map((playerName, index) => {
                                     const isRevealed = gameState.revealedPlayers.includes(index);
@@ -225,6 +207,24 @@ function App() {
                                     );
                                 })}
                             </div>
+
+                            {allPlayersRevealed && (
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginBottom: 'var(--spacing-md)'
+                                }}>
+                                    <button
+                                        className="btn btn-primary btn-lg"
+                                        onClick={handleStartMission}
+                                        style={{
+                                            fontSize: '1.25rem',
+                                            animation: 'pulse 2s ease-in-out infinite'
+                                        }}
+                                    >
+                                        🚀 Start Game
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         <GameControls
