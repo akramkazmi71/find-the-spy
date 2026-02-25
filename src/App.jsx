@@ -32,6 +32,16 @@ function App() {
         return saved ? JSON.parse(saved).playerCount : 0;
     });
 
+    const [spyCount, setSpyCount] = React.useState(() => {
+        const saved = localStorage.getItem(GAME_STATE_KEY);
+        return saved ? JSON.parse(saved).spyCount : 1;
+    });
+
+    const [spiesKnowEachOther, setSpiesKnowEachOther] = React.useState(() => {
+        const saved = localStorage.getItem(GAME_STATE_KEY);
+        return saved ? JSON.parse(saved).spiesKnowEachOther || false : false;
+    });
+
     const [gameState, setGameState] = React.useState(() => {
         const saved = localStorage.getItem(GAME_STATE_KEY);
         return saved ? JSON.parse(saved).gameState : null;
@@ -51,14 +61,21 @@ function App() {
     // Save state to localStorage whenever it changes
     React.useEffect(() => {
         if (phase !== PHASE.LANDING) {
+            // Ensure gameState is migrated if it exists
+            const migratedGameState = gameState && !gameState.spyIndices && gameState.spyIndex !== undefined
+                ? { ...gameState, spyIndices: [gameState.spyIndex] }
+                : gameState;
+
             const stateToSave = {
                 phase,
                 playerCount,
-                gameState
+                spyCount,
+                spiesKnowEachOther,
+                gameState: migratedGameState
             };
             localStorage.setItem(GAME_STATE_KEY, JSON.stringify(stateToSave));
         }
-    }, [phase, playerCount, gameState]);
+    }, [phase, playerCount, spyCount, gameState]);
 
     const handleStartNewGame = () => {
         setPhase(PHASE.SETUP);
@@ -76,14 +93,18 @@ function App() {
         }
     };
 
-    const handlePlayerCountSelected = (count) => {
+    const handlePlayerCountSelected = (count, spies, knowEachOther) => {
         setPlayerCount(count);
+        setSpyCount(spies);
+        setSpiesKnowEachOther(knowEachOther);
         setPhase(PHASE.NAME_ENTRY);
     };
 
     const handleNamesComplete = (names) => {
-        const newGame = initializeGame(names);
-        setGameState(newGame);
+        const newGame = initializeGame(names, spyCount);
+        // Include cooperation flag in game state for easy access in components
+        const gameWithCooperation = { ...newGame, spiesKnowEachOther };
+        setGameState(gameWithCooperation);
         setPhase(PHASE.BRIEFING);
     };
 
@@ -111,8 +132,9 @@ function App() {
 
     const handleNewRound = () => {
         if (gameState) {
-            const newGame = initializeGame(gameState.players);
-            setGameState(newGame);
+            const newGame = initializeGame(gameState.players, spyCount);
+            const gameWithCooperation = { ...newGame, spiesKnowEachOther };
+            setGameState(gameWithCooperation);
             setPhase(PHASE.BRIEFING);
         }
     };
@@ -120,6 +142,8 @@ function App() {
     const handleReset = () => {
         setPhase(PHASE.LANDING);
         setPlayerCount(0);
+        setSpyCount(1);
+        setSpiesKnowEachOther(false);
         setGameState(null);
         setRevealingPlayer(null);
         localStorage.removeItem(GAME_STATE_KEY);
@@ -254,7 +278,15 @@ function App() {
                     <WordReveal
                         playerName={gameState.players[revealingPlayer]}
                         word={gameState.word}
-                        isSpy={revealingPlayer === gameState.spyIndex}
+                        isSpy={(gameState.spyIndices || (gameState.spyIndex !== undefined ? [gameState.spyIndex] : [])).includes(revealingPlayer)}
+                        spiesKnowEachOther={gameState.spiesKnowEachOther}
+                        otherSpyNames={
+                            gameState.spyIndices
+                                ? gameState.spyIndices
+                                    .filter(idx => idx !== revealingPlayer)
+                                    .map(idx => gameState.players[idx])
+                                : []
+                        }
                         onClose={handleCloseReveal}
                     />
                 )}

@@ -1,0 +1,48 @@
+# How to Build and Run
+
+Follow these steps to get the **Find the Spy** game running on your local machine.
+
+## Prerequisites
+
+- **Node.js**: Ensure you have Node.js installed (v18 or higher recommended).
+- **npm**: Usually comes with Node.js.
+
+## Getting Started
+
+1. **Install Dependencies**:
+   Open your terminal in the project root and run:
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server**:
+   To start the app in development mode (with hot-reloading):
+   ```bash
+   npm run dev
+   ```
+   The app will typically be available at `http://localhost:5173`.
+
+## Building for Production
+
+If you want to create a production-ready bundle:
+
+1. **Build**:
+   ```bash
+   npm run build
+   ```
+   This generates a `dist/` folder with optimized assets.
+
+2. **Preview Production Build**:
+   To test the production build locally:
+   ```bash
+   npm run preview
+   ```
+
+---
+
+## Deployment
+
+This project is configured for easy deployment on **Netlify**. 
+- Simply connect your GitHub repository to Netlify.
+- Build command: `npm run build`
+- Publish directory: `dist`

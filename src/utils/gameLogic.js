@@ -66,18 +66,22 @@ export function selectRandomWord() {
 }
 
 /**
- * Randomly select a spy from the list of players
+ * Randomly select spies from the list of players
  * Uses crypto.getRandomValues for better randomness
  */
-export function selectSpy(players) {
+export function selectSpies(players, count = 1) {
     if (!players || players.length === 0) {
-        return null;
+        return [];
     }
-    // Use crypto for better randomness
-    const array = new Uint32Array(1);
-    crypto.getRandomValues(array);
-    const randomIndex = array[0] % players.length;
-    return randomIndex;
+
+    // Ensure we don't pick more spies than players
+    const actualCount = Math.min(count, players.length);
+    const indices = Array.from({ length: players.length }, (_, i) => i);
+    const selectedIndices = [];
+
+    // Shuffle indices and take the first 'count' ones
+    const shuffledIndices = shuffleArray(indices);
+    return shuffledIndices.slice(0, actualCount);
 }
 
 /**
@@ -96,32 +100,18 @@ export function selectStartingPlayer(players) {
 
 /**
  * Initialize a new game with players
- * Returns game state with word, spy index, and starting player
+ * Returns game state with word, spy indices, and starting player
  */
-export function initializeGame(players) {
+export function initializeGame(players, spyCount = 1) {
     const word = selectRandomWord();
-    const spyIndex = selectSpy(players);
-    let startingPlayerIndex = selectStartingPlayer(players);
+    const spyIndices = selectSpies(players, spyCount);
+    const startingPlayerIndex = selectStartingPlayer(players);
 
-    // Ensure spy doesn't start (if > 1 player)
-    if (players.length > 1) {
-        // Simple rejection sampling: keep picking until different
-        // With small player counts, this is efficient enough
-        let safetyCounter = 0;
-        while (startingPlayerIndex === spyIndex && safetyCounter < 10) {
-            startingPlayerIndex = selectStartingPlayer(players);
-            safetyCounter++;
-        }
-
-        // Fallback if random fails (unlikely, but safe)
-        if (startingPlayerIndex === spyIndex) {
-            startingPlayerIndex = (spyIndex + 1) % players.length;
-        }
-    }
+    // Note: Spy starting restriction removed as per user request to make it unpredictable.
 
     return {
         word,
-        spyIndex,
+        spyIndices,
         startingPlayerIndex,
         players,
         revealedPlayers: []

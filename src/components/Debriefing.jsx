@@ -2,7 +2,10 @@ import React from 'react';
 import { getWordDescription } from '../utils/wordDatabase';
 
 export default function Debriefing({ gameState, onNewRound, onNewGame }) {
-    const spyName = gameState.players[gameState.spyIndex];
+    // Migration safety: support both old 'spyIndex' and new 'spyIndices'
+    const indices = gameState.spyIndices || (gameState.spyIndex !== undefined ? [gameState.spyIndex] : []);
+    const spyNames = indices.map(index => gameState.players[index]).join(', ');
+    const spyCount = indices.length;
     const word = gameState.word;
     const description = getWordDescription(word);
 
@@ -38,7 +41,7 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
                     paddingLeft: 'var(--spacing-md)',
                     paddingRight: 'var(--spacing-md)',
                 }}
-                >
+            >
                 {/* Spy Reveal */}
                 <div className="card-result" style={{
                     background: '#FEF2F2',
@@ -55,7 +58,7 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
                         marginBottom: '0.5rem',
                         fontSize: '0.9rem'
                     }}>
-                        The Spy Was
+                        {spyCount > 1 ? 'The Spies Were' : 'The Spy Was'}
                     </div>
                     <div style={{
                         fontSize: '2.5rem',
@@ -63,7 +66,7 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
                         color: 'var(--text-main)',
                         lineHeight: 1.2
                     }}>
-                        {spyName}
+                        {spyNames}
                     </div>
                 </div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function WordReveal({ playerName, word, description, isSpy, onClose }) {
+export default function WordReveal({ playerName, word, description, isSpy, onClose, spiesKnowEachOther, otherSpyNames }) {
     const [isRevealed, setIsRevealed] = React.useState(false);
 
     const handleReveal = () => {
@@ -70,6 +70,35 @@ export default function WordReveal({ playerName, word, description, isSpy, onClo
                                 }}>
                                     Try to figure out the word from others' descriptions!
                                 </p>
+
+                                {spiesKnowEachOther && otherSpyNames && otherSpyNames.length > 0 && (
+                                    <div style={{
+                                        marginTop: '1.5rem',
+                                        padding: '1.25rem',
+                                        background: 'rgba(139, 92, 246, 0.1)',
+                                        border: '2px dashed var(--primary)',
+                                        borderRadius: 'var(--radius-md)',
+                                        textAlign: 'center'
+                                    }}>
+                                        <p style={{
+                                            fontSize: '0.875rem',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            fontWeight: 800,
+                                            color: 'var(--primary)',
+                                            marginBottom: '0.5rem'
+                                        }}>
+                                            🤝 Your fellow spies
+                                        </p>
+                                        <div style={{
+                                            fontSize: '1.5rem',
+                                            fontWeight: 900,
+                                            color: 'var(--text-main)'
+                                        }}>
+                                            {otherSpyNames.join(', ')}
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         ) : (
                             <>
