@@ -13,42 +13,41 @@ export default function PlayerSetup({ onStart, onBack }) {
 
     return (
         <div className="card">
-            <h2 className="card-title">Number of Players</h2>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-md)' }}>
-                Select total players (3-20)
-            </p>
-
-            <div className="number-selector">
-                {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
-                    <button
-                        key={num}
-                        className={`number-btn ${selectedCount === num ? 'selected' : ''}`}
-                        onClick={() => setSelectedCount(num)}
-                    >
-                        {num}
-                    </button>
-                ))}
-            </div>
-
-            <div style={{ marginTop: 'var(--spacing-xl)' }}>
-                <h2 className="card-title">Number of Spies</h2>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-md)' }}>
-                    How many spies are in the game?
-                </p>
-                <div className="number-selector" style={{ justifyContent: 'center' }}>
-                    {[1, 2, 3].map(num => (
+            <div style={{ marginBottom: 'var(--spacing-xl)' }}>
+                <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Number of Players</h3>
+                <div className="grid-selector">
+                    {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
                         <button
                             key={num}
-                            className={`number-btn ${selectedSpyCount === num ? 'selected' : ''}`}
-                            onClick={(e) => {
-                                setSelectedSpyCount(num);
-                                if (num === 1) setSpiesKnowEachOther(false);
-                            }}
-                            style={{ minWidth: '80px' }}
+                            type="button"
+                            className={`grid-btn ${selectedCount === num ? 'selected' : ''}`}
+                            onClick={() => setSelectedCount(num)}
                         >
                             {num}
                         </button>
                     ))}
+                </div>
+            </div>
+
+            <div style={{ marginTop: 'var(--spacing-xl)' }}>
+                <div style={{ marginBottom: 'var(--spacing-xl)' }}>
+                    <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Number of Spies</h3>
+                    <div className="grid-selector" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                        {[1, 2, 3].map(num => (
+                            <button
+                                key={num}
+                                type="button"
+                                className={`grid-btn ${selectedSpyCount === num ? 'selected' : ''}`}
+                                onClick={(e) => {
+                                    setSelectedSpyCount(num);
+                                    if (num === 1) setSpiesKnowEachOther(false);
+                                }}
+                                style={{ minWidth: '80px' }}
+                            >
+                                {num}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {selectedSpyCount === 3 && (
@@ -89,12 +88,8 @@ export default function PlayerSetup({ onStart, onBack }) {
                                 cursor: 'pointer'
                             }}
                         />
-                        <span style={{
-                            fontSize: '1rem',
-                            fontWeight: 700,
-                            color: spiesKnowEachOther ? 'var(--primary)' : 'var(--text-main)'
-                        }}>
-                            🤝 Spies know each other
+                        <span style={{ fontWeight: 600, color: spiesKnowEachOther ? 'var(--primary)' : 'var(--text-main)', fontSize: '1.1rem' }}>
+                            Spies know each other
                         </span>
                     </div>
                 )}

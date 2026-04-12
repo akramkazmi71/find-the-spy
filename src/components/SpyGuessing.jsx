@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function SpyGuessing({ gameState, onComplete }) {
+export default function SpyGuessing({ gameState, onComplete, onBack }) {
     const [guessStatus, setGuessStatus] = useState({}); // { [index]: 'correct' | 'incorrect' }
     const [feedbackMessage, setFeedbackMessage] = useState({ text: '', type: '' });
 
@@ -39,9 +39,9 @@ export default function SpyGuessing({ gameState, onComplete }) {
 
     return (
         <div className="card" style={{ textAlign: 'center', animation: 'fadeInUp 0.6s ease' }}>
-            <h2 className="card-title">Guess the Spy!</h2>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-md)' }}>
-                Tap on the players you suspect.
+            <h2 className="title">Guess the Spy!</h2>
+            <p className="subtitle">
+                Tap the players you suspect.
             </p>
 
             {feedbackMessage.text && (
@@ -66,14 +66,12 @@ export default function SpyGuessing({ gameState, onComplete }) {
                     let statusText = 'Tap to Guess';
 
                     if (status === 'correct') {
-                        cardStyle.background = '#FEF2F2';
                         cardStyle.borderColor = 'var(--danger)';
                         cardStyle.color = 'var(--danger)';
                         statusText = 'SPY!';
                     } else if (status === 'incorrect') {
-                        cardStyle.background = 'rgba(156, 163, 175, 0.1)';
-                        cardStyle.borderColor = 'transparent';
-                        cardStyle.opacity = 0.6;
+                        cardStyle.borderColor = 'var(--border-color)';
+                        cardStyle.opacity = 0.5;
                         statusText = 'Innocent';
                         cardStyle.cursor = 'default';
                     }
@@ -81,16 +79,18 @@ export default function SpyGuessing({ gameState, onComplete }) {
                     return (
                         <div
                             key={index}
-                            className={`player-card ${status ? 'revealed' : ''}`}
+                            className={`player-card ${status ? (status === 'correct' ? 'stamp-correct' : 'stamp-incorrect') : 'tappable'}`}
                             onClick={() => !status && handleGuess(index)}
                             style={cardStyle}
                         >
-                            <div className="player-name">{playerName}</div>
-                            <div className="player-status" style={{
-                                color: status === 'correct' ? 'var(--danger)' : 'var(--text-muted)'
+                            <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>{playerName}</span>
+                            <span style={{
+                                fontSize: '0.875rem',
+                                color: status === 'correct' ? 'var(--danger)' : 'var(--text-muted)',
+                                fontWeight: status ? 800 : 400
                             }}>
                                 {statusText}
-                            </div>
+                            </span>
                         </div>
                     );
                 })}
@@ -98,12 +98,23 @@ export default function SpyGuessing({ gameState, onComplete }) {
 
             <div className="btn-group">
                 <button
-                    className="btn btn-primary btn-lg"
+                    type="button"
+                    className="btn btn-secondary btn-lg"
                     onClick={onComplete}
                     style={{ width: '100%' }}
                 >
-                    ➡️ Continue to Debriefing
+                    Continue to Debriefing
                 </button>
+                {onBack && (
+                    <button
+                        type="button"
+                        className="btn btn-secondary btn-lg"
+                        onClick={onBack}
+                        style={{ width: '100%', background: 'transparent', border: '1px solid var(--border-color)' }}
+                    >
+                        ← Back to Game
+                    </button>
+                )}
             </div>
         </div>
     );

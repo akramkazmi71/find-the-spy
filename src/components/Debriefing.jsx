@@ -15,18 +15,18 @@ export default function Debriefing({ gameState, onNewRound, onNewGame, onEditTea
                 <div style={{
                     display: 'inline-block',
                     padding: '0.5rem 1.5rem',
-                    background: 'rgba(16, 185, 129, 0.2)',
-                    border: '1px solid var(--success)',
+                    background: 'rgba(56, 189, 248, 0.1)',
+                    border: '1px solid var(--primary)',
                     borderRadius: 'var(--radius-full)',
-                    color: 'var(--success)',
+                    color: 'var(--primary)',
                     fontWeight: 700,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.2em',
+                    letterSpacing: '0.1em',
                     marginBottom: 'var(--spacing-md)'
                 }}>
-                    ✓ Game Over
+                    Game Over
                 </div>
-                <h2 className="card-title" style={{ fontSize: '2.5rem', marginBottom: 'var(--spacing-sm)' }}>
+                <h2 className="title" style={{ marginBottom: 'var(--spacing-sm)' }}>
                     Game Results
                 </h2>
             </div>
@@ -44,27 +44,29 @@ export default function Debriefing({ gameState, onNewRound, onNewGame, onEditTea
             >
                 {/* Spy Reveal */}
                 <div className="card-result" style={{
-                    background: '#FEF2F2',
-                    border: '4px solid var(--danger)',
+                    background: 'var(--bg-app)',
+                    border: '2px solid var(--danger)',
+                    boxShadow: '0 8px 20px rgba(239, 68, 68, 0.15)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '2rem',
                     textAlign: 'center'
                 }}>
                     <div style={{
-                        color: 'var(--danger)',
+                        color: 'var(--text-muted)',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
                         fontWeight: 800,
                         marginBottom: '0.5rem',
                         fontSize: '0.9rem'
                     }}>
-                        {spyCount > 1 ? 'The Spies Were' : 'The Spy Was'}
+                        {spyCount > 1 ? 'The Spies' : 'The Spy'}
                     </div>
                     <div style={{
                         fontSize: '2.5rem',
                         fontWeight: 900,
-                        color: 'var(--text-main)',
-                        lineHeight: 1.2
+                        color: 'var(--danger)',
+                        lineHeight: 1.2,
+                        textShadow: '0 0 10px rgba(239, 68, 68, 0.3)'
                     }}>
                         {spyNames}
                     </div>
@@ -72,53 +74,62 @@ export default function Debriefing({ gameState, onNewRound, onNewGame, onEditTea
 
                 {/* Word Reveal */}
                 <div className="card-result" style={{
-                    background: '#F3F4F6',
-                    border: '4px solid var(--primary)',
+                    background: 'var(--bg-app)',
+                    border: '2px solid var(--primary)',
+                    boxShadow: '0 8px 20px rgba(56, 189, 248, 0.15)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '2rem',
                     textAlign: 'center'
                 }}>
                     <div style={{
-                        color: 'var(--primary)',
+                        color: 'var(--text-muted)',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
                         fontWeight: 800,
                         marginBottom: '0.5rem',
                         fontSize: '0.9rem'
                     }}>
-                        The Secret Word
+                        Secret Word
                     </div>
                     <div style={{
                         fontSize: '2.5rem',
                         fontWeight: 900,
-                        color: 'var(--text-main)',
-                        lineHeight: 1.2
+                        color: 'var(--primary)',
+                        lineHeight: 1.2,
+                        textTransform: 'capitalize',
+                        textShadow: '0 0 10px rgba(56, 189, 248, 0.3)'
                     }}>
                         {word}
                     </div>
                 </div>
             </div>
 
-            <div className="btn-group" style={{ flexDirection: 'column', gap: '1.5rem', display: 'flex' }}>
+            <div className="btn-group">
                 <button
+                    type="button"
                     className="btn btn-primary btn-lg"
                     onClick={onNewRound}
                 >
-                    🔄 Play Again
+                    Play Again
                 </button>
-                <button
-                    className="btn btn-secondary btn-lg"
-                    onClick={onEditTeam}
-                    style={{ background: 'var(--bg-secondary)', color: 'var(--text-main)', borderColor: 'var(--border-color)' }}
-                >
-                    ⚙️ Edit Team & Roles
-                </button>
-                <button
-                    className="btn btn-secondary btn-lg"
-                    onClick={onNewGame}
-                >
-                    🆕 New Game (New Team)
-                </button>
+                <div style={{ display: 'flex', gap: '1rem', width: '100%', flexDirection: 'row' }}>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={onEditTeam}
+                        style={{ flex: 1 }}
+                    >
+                        Edit Team
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={onNewGame}
+                        style={{ flex: 1 }}
+                    >
+                        New Match
+                    </button>
+                </div>
             </div>
         </div>
     );

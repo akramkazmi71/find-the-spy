@@ -31,7 +31,7 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
 
     return (
         <div className="card" style={{ animation: 'fadeInUp 0.6s ease' }}>
-            <h2 className="card-title">Manage Team</h2>
+            <h2 className="title">Manage Team</h2>
 
             <form onSubmit={handleAdd} style={{ marginBottom: 'var(--spacing-lg)' }}>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -39,7 +39,7 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                         type="text"
                         className="input-field"
                         style={{ flex: 1, marginBottom: 0 }}
-                        placeholder="Add new player..."
+                        placeholder="Enter player name..."
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                         maxLength={20}
@@ -49,9 +49,9 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                         type="submit"
                         className="btn btn-primary"
                         disabled={!newName.trim() || players.length >= 20}
-                        style={{ padding: '0 1rem' }}
+                        style={{ padding: '0 1rem', minWidth: '100px' }}
                     >
-                        ➕ Add
+                        Add
                     </button>
                 </div>
             </form>
@@ -96,13 +96,13 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
             </div>
 
             <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                <h3 style={{ marginBottom: '0.5rem', fontSize: '1.125rem' }}>Number of Spies</h3>
-                <div className="number-selector" style={{ justifyContent: 'center' }}>
+                <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Number of Spies</h3>
+                <div className="grid-selector" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
                     {[1, 2, 3].map(num => (
                         <button
                             key={num}
                             type="button"
-                            className={`number-btn ${spyCount === num ? 'selected' : ''}`}
+                            className={`grid-btn ${spyCount === num ? 'selected' : ''}`}
                             onClick={() => {
                                 setSpyCount(num);
                                 if (num === 1) setSpiesKnowEachOther(false);
@@ -134,10 +134,14 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                             type="checkbox"
                             checked={spiesKnowEachOther}
                             onChange={() => { }}
-                            style={{ cursor: 'pointer', width: '20px', height: '20px' }}
+                            style={{ cursor: 'pointer', width: '20px', height: '20px', opacity: 0, position: 'absolute' }}
                         />
-                        <span style={{ fontWeight: 700, color: spiesKnowEachOther ? 'var(--primary)' : 'var(--text-main)' }}>
-                            🤝 Spies know each other
+                        <span style={{
+                            fontWeight: 600,
+                            color: spiesKnowEachOther ? 'var(--primary)' : 'var(--text-main)',
+                            fontSize: '1.1rem'
+                        }}>
+                            Spies know each other
                         </span>
                     </div>
                 )}
@@ -148,21 +152,23 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                 )}
             </div>
 
-            <div className="btn-group" style={{ flexDirection: 'column', gap: '1rem' }}>
+            <div className="btn-group">
                 <button
+                    type="button"
                     className="btn btn-primary btn-lg"
                     onClick={handleStart}
                     disabled={players.length < 3}
                     style={{ width: '100%', opacity: players.length < 3 ? 0.5 : 1 }}
                 >
-                    🚀 Start Next Round
+                    Start Next Round
                 </button>
                 <button
+                    type="button"
                     className="btn btn-secondary btn-lg"
                     onClick={onCancel}
                     style={{ width: '100%' }}
                 >
-                    ⬅️ Back
+                    Back
                 </button>
             </div>
         </div>

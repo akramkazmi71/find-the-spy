@@ -1,66 +1,62 @@
 import React from 'react';
 
-export default function MissionControl({ gameState, onEndMission }) {
+export default function MissionControl({ gameState, onEndMission, onBack }) {
     const startingPlayer = gameState.players[gameState.startingPlayerIndex];
 
     return (
-        <div className="card mission-control" style={{ textAlign: 'center', animation: 'fadeInUp 0.6s ease' }}>
-            <div className="mission-tag">
-                ● Game On!
-            </div>
-            <h2 className="card-title" style={{ fontSize: '2.5rem', marginBottom: 'var(--spacing-sm)' }}>
-                Who is the Spy?
-            </h2>
-            <p style={{ color: 'var(--text-secondary)' }}>
-                Let the game begin!
-            </p>
-
-            <div className="starting-player-section" style={{
-                marginBottom: 'var(--spacing-xl)',
-                textAlign: 'center'
-            }}>
-                <p style={{
-                    color: 'var(--text-muted)',
+        <div className="card" style={{ textAlign: 'center', animation: 'fadeInUp 0.6s ease' }}>
+            <div className="mission-header" style={{ marginBottom: 'var(--spacing-lg)' }}>
+                <div style={{
+                    display: 'inline-block',
+                    padding: '0.5rem 1.5rem',
+                    background: 'rgba(56, 189, 248, 0.1)',
+                    border: '1px solid var(--primary)',
+                    borderRadius: 'var(--radius-full)',
+                    color: 'var(--primary)',
+                    fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
-                    marginBottom: '0.5rem',
-                    fontSize: '0.875rem',
-                    fontWeight: 700
+                    marginBottom: 'var(--spacing-md)'
                 }}>
+                    Game On!
+                </div>
+                <h2 className="title" style={{ marginBottom: 'var(--spacing-sm)' }}>
+                    Who is the Spy?
+                </h2>
+                <p className="subtitle" style={{ marginBottom: 0 }}>
+                    Ask questions and find out!
+                </p>
+            </div>
+
+            <div style={{ marginBottom: 'var(--spacing-xl)' }}>
+                <p style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '1rem' }}>
                     The Game Starts With
                 </p>
-                <div style={{
-                    fontSize: '3.5rem',
-                    fontWeight: 900,
-                    color: 'var(--text-main)',
-                    lineHeight: 1.2,
-                    textTransform: 'uppercase'
-                }}>
+                <div className="start-player-circle">
                     {startingPlayer}
                 </div>
             </div>
 
-            <p style={{
-                color: 'var(--text-secondary)',
-                marginTop: 'var(--spacing-md)',
-                fontStyle: 'italic',
-                fontSize: '1.25rem',
-                fontWeight: 600
-            }}>
-                "{startingPlayer}, tell something related to the word!"
-            </p>
-
-            <button
-                className="btn btn-danger btn-lg"
-                onClick={onEndMission}
-                style={{
-                    minWidth: '250px',
-                    fontSize: '1.25rem',
-                    padding: '1.25rem 3rem'
-                }}
-            >
-                🛑 End Game & Guess Spy
-            </button>
+            <div className="btn-group">
+                <button
+                    type="button"
+                    className="btn btn-primary btn-lg"
+                    onClick={onEndMission}
+                    style={{ width: '100%', padding: '1.5rem', fontSize: '1.25rem' }}
+                >
+                    End Game & Guess Spy
+                </button>
+                {onBack && (
+                    <button
+                        type="button"
+                        className="btn btn-secondary btn-lg"
+                        onClick={onBack}
+                        style={{ width: '100%' }}
+                    >
+                        ← Back to Reveal
+                    </button>
+                )}
+            </div>
         </div>
     );
 }

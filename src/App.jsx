@@ -53,6 +53,15 @@ function App() {
         return saved ? JSON.parse(saved).gameState : null;
     });
 
+    const [names, setNames] = React.useState(() => {
+        const saved = localStorage.getItem(GAME_STATE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed.gameState && parsed.gameState.players) return parsed.gameState.players;
+        }
+        return [];
+    });
+
     const [revealingPlayer, setRevealingPlayer] = React.useState(null);
 
     // Check if there's a valid saved game to continue
@@ -77,7 +86,8 @@ function App() {
                 playerCount,
                 spyCount,
                 spiesKnowEachOther,
-                gameState: migratedGameState
+                gameState: migratedGameState,
+                names // Preserve names even if game not started
             };
             localStorage.setItem(GAME_STATE_KEY, JSON.stringify(stateToSave));
         }
@@ -87,6 +97,7 @@ function App() {
         setPhase(PHASE.SETUP);
         setPlayerCount(0);
         setGameState(null);
+        setNames([]);
     };
 
     const handleContinueGame = () => {
@@ -96,6 +107,7 @@ function App() {
             setPlayerCount(parsed.playerCount);
             setGameState(parsed.gameState);
             setPhase(parsed.phase);
+            if (parsed.names) setNames(parsed.names);
         }
     };
 
@@ -103,6 +115,10 @@ function App() {
         setPlayerCount(count);
         setSpyCount(spies);
         setSpiesKnowEachOther(knowEachOther);
+        // Initialize names array if count changed
+        if (names.length !== count) {
+            setNames(Array(count).fill(''));
+        }
         setPhase(PHASE.NAME_ENTRY);
     };
 
@@ -219,11 +235,11 @@ function App() {
                                 </button>
                             )}
                             <button
-                                className="btn btn-secondary btn-lg"
+                                className="btn btn-primary btn-lg"
                                 onClick={handleStartNewGame}
                                 style={{ width: '100%' }}
                             >
-                                🆕 Start New Game
+                                🚀 Start New Game
                             </button>
                         </div>
                     </div>
@@ -245,6 +261,8 @@ function App() {
                         playerCount={playerCount}
                         onComplete={handleNamesComplete}
                         onBack={() => setPhase(PHASE.SETUP)}
+                        names={names}
+                        setNames={setNames}
                     />
                 )}
 
@@ -284,23 +302,33 @@ function App() {
                                 })}
                             </div>
 
-                            {allPlayersRevealed && (
-                                <div style={{
-                                    textAlign: 'center',
-                                    marginBottom: 'var(--spacing-md)'
-                                }}>
+                            <div style={{
+                                display: 'flex',
+                                gap: '1rem',
+                                justifyContent: 'center',
+                                marginBottom: 'var(--spacing-md)'
+                            }}>
+                                {allPlayersRevealed ? (
                                     <button
                                         className="btn btn-primary btn-lg"
                                         onClick={handleStartMission}
                                         style={{
                                             fontSize: '1.25rem',
-                                            animation: 'pulse 2s ease-in-out infinite'
+                                            animation: 'pulse 2s ease-in-out infinite',
+                                            flex: 2
                                         }}
                                     >
                                         🚀 Start Game
                                     </button>
-                                </div>
-                            )}
+                                ) : null}
+                                <button
+                                    className="btn btn-secondary btn-lg"
+                                    onClick={() => setPhase(PHASE.NAME_ENTRY)}
+                                    style={{ flex: 1 }}
+                                >
+                                    ← Back
+                                </button>
+                            </div>
                         </div>
 
                         <GameControls
@@ -315,6 +343,7 @@ function App() {
                     <MissionControl
                         gameState={gameState}
                         onEndMission={handleEndMission}
+                        onBack={() => setPhase(PHASE.BRIEFING)}
                     />
                 )}
 
@@ -322,6 +351,7 @@ function App() {
                     <SpyGuessing
                         gameState={gameState}
                         onComplete={handleEndGuessing}
+                        onBack={() => setPhase(PHASE.MISSION)}
                     />
                 )}
 

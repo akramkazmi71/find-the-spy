@@ -33,7 +33,7 @@ export default function WordListSetup({ onBack }) {
 
     return (
         <div className="card" style={{ animation: 'fadeInUp 0.6s ease' }}>
-            <h2 className="card-title">Word Settings</h2>
+            <h2 className="card-title">SYSTEM PROTOCAL // WORD_LIST</h2>
 
             <div style={{ marginBottom: 'var(--spacing-lg)', textAlign: 'left' }}>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '0.75rem', fontWeight: 600 }}>
@@ -67,10 +67,12 @@ export default function WordListSetup({ onBack }) {
                             minHeight: '150px',
                             padding: '1rem',
                             borderRadius: 'var(--radius-md)',
-                            border: '2px solid var(--border-color)',
+                            border: '1px solid var(--border-color)',
+                            background: 'rgba(0, 229, 255, 0.05)',
+                            color: 'var(--primary)',
                             fontSize: '1rem',
-                            resize: 'vertical',
-                            fontFamily: 'inherit'
+                            fontFamily: 'var(--font-mono)',
+                            resize: 'vertical'
                         }}
                         value={customWordsText}
                         onChange={(e) => setCustomWordsText(e.target.value)}
