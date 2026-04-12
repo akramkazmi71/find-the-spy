@@ -59,7 +59,7 @@ export default function MissionControl({ gameState, onEndMission }) {
                     padding: '1.25rem 3rem'
                 }}
             >
-                🛑 End Game & Reveal Spy
+                🛑 End Game & Guess Spy
             </button>
         </div>
     );

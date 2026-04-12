@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function NameEntry({ playerCount, onComplete }) {
+export default function NameEntry({ playerCount, onComplete, onBack }) {
     const [names, setNames] = React.useState(Array(playerCount).fill(''));
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
@@ -19,6 +19,8 @@ export default function NameEntry({ playerCount, onComplete }) {
     const handlePrevious = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
+        } else if (onBack) {
+            onBack();
         }
     };
 
@@ -59,25 +61,25 @@ export default function NameEntry({ playerCount, onComplete }) {
             </div> */}
 
             <div className="input-group">
-            <input
-                type="text"
-                id={`player-${currentIndex}`}
-                value={currentName}
-                onChange={(e) => handleNameChange(currentIndex, e.target.value)}
-                onKeyDown={(e) => {
-                if (e.key === 'Enter' && currentName.trim()) {
-                    if (currentIndex < playerCount - 1) {
-                    handleNext();
-                    } else if (allNamesFilled) {
-                    handleSubmit();
-                    }
-                }
-                }}
-                required
-            />
-            <label htmlFor={`player-${currentIndex}`}>
-                Player {currentIndex + 1} Name
-            </label>
+                <input
+                    type="text"
+                    id={`player-${currentIndex}`}
+                    value={currentName}
+                    onChange={(e) => handleNameChange(currentIndex, e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && currentName.trim()) {
+                            if (currentIndex < playerCount - 1) {
+                                handleNext();
+                            } else if (allNamesFilled) {
+                                handleSubmit();
+                            }
+                        }
+                    }}
+                    required
+                />
+                <label htmlFor={`player-${currentIndex}`}>
+                    Player {currentIndex + 1} Name
+                </label>
             </div>
 
 
@@ -132,50 +134,46 @@ export default function NameEntry({ playerCount, onComplete }) {
             </div> */}
 
             <div
-            className="btn-group"
-            style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '1rem'
-            }}
-            >
-            <button
-                className="btn btn-secondary btn-lg"
-                onClick={handlePrevious}
-                disabled={currentIndex === 0}
+                className="btn-group"
                 style={{
-                opacity: currentIndex === 0 ? 0.5 : 1,
-                minWidth: 0
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '1rem'
                 }}
             >
-                ← Back
-            </button>
+                <button
+                    className="btn btn-secondary btn-lg"
+                    onClick={handlePrevious}
+                    style={{ minWidth: 0 }}
+                >
+                    ← Back
+                </button>
 
-            {currentIndex < playerCount - 1 ? (
-                <button
-                className="btn btn-primary btn-lg"
-                onClick={handleNext}
-                disabled={!currentName.trim()}
-                style={{
-                    opacity: currentName.trim() ? 1 : 0.5,
-                    minWidth: 0
-                }}
-                >
-                Next →
-                </button>
-            ) : (
-                <button
-                className="btn btn-primary btn-lg"
-                onClick={handleSubmit}
-                disabled={!allNamesFilled}
-                style={{
-                    opacity: allNamesFilled ? 1 : 0.5,
-                    minWidth: 0
-                }}
-                >
-                Start Game 🚀
-                </button>
-            )}
+                {currentIndex < playerCount - 1 ? (
+                    <button
+                        className="btn btn-primary btn-lg"
+                        onClick={handleNext}
+                        disabled={!currentName.trim()}
+                        style={{
+                            opacity: currentName.trim() ? 1 : 0.5,
+                            minWidth: 0
+                        }}
+                    >
+                        Next →
+                    </button>
+                ) : (
+                    <button
+                        className="btn btn-primary btn-lg"
+                        onClick={handleSubmit}
+                        disabled={!allNamesFilled}
+                        style={{
+                            opacity: allNamesFilled ? 1 : 0.5,
+                            minWidth: 0
+                        }}
+                    >
+                        Start Game 🚀
+                    </button>
+                )}
             </div>
 
 

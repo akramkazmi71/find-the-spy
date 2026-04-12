@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PlayerSetup({ onStart }) {
+export default function PlayerSetup({ onStart, onBack }) {
     const [selectedCount, setSelectedCount] = React.useState(null);
     const [selectedSpyCount, setSelectedSpyCount] = React.useState(1);
     const [spiesKnowEachOther, setSpiesKnowEachOther] = React.useState(false);
@@ -15,11 +15,11 @@ export default function PlayerSetup({ onStart }) {
         <div className="card">
             <h2 className="card-title">Number of Players</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-md)' }}>
-                Select total players (3-16)
+                Select total players (3-20)
             </p>
 
             <div className="number-selector">
-                {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(num => (
+                {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
                     <button
                         key={num}
                         className={`number-btn ${selectedCount === num ? 'selected' : ''}`}
@@ -100,12 +100,21 @@ export default function PlayerSetup({ onStart }) {
                 )}
             </div>
 
-            <div className="btn-group" style={{ marginTop: 'var(--spacing-xl)' }}>
+            <div className="btn-group" style={{ marginTop: 'var(--spacing-xl)', display: 'flex', gap: '1rem' }}>
+                {onBack && (
+                    <button
+                        className="btn btn-secondary btn-lg"
+                        onClick={onBack}
+                        style={{ flex: 1, minWidth: 0 }}
+                    >
+                        ← Back
+                    </button>
+                )}
                 <button
                     className="btn btn-primary btn-lg"
                     onClick={handleStart}
                     disabled={!selectedCount}
-                    style={{ opacity: selectedCount ? 1 : 0.5, width: '100%' }}
+                    style={{ opacity: selectedCount ? 1 : 0.5, flex: 1, minWidth: 0 }}
                 >
                     Continue →
                 </button>

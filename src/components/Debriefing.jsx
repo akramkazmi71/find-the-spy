@@ -1,7 +1,7 @@
 import React from 'react';
 import { getWordDescription } from '../utils/wordDatabase';
 
-export default function Debriefing({ gameState, onNewRound, onNewGame }) {
+export default function Debriefing({ gameState, onNewRound, onNewGame, onEditTeam }) {
     // Migration safety: support both old 'spyIndex' and new 'spyIndices'
     const indices = gameState.spyIndices || (gameState.spyIndex !== undefined ? [gameState.spyIndex] : []);
     const spyNames = indices.map(index => gameState.players[index]).join(', ');
@@ -105,6 +105,13 @@ export default function Debriefing({ gameState, onNewRound, onNewGame }) {
                     onClick={onNewRound}
                 >
                     🔄 Play Again
+                </button>
+                <button
+                    className="btn btn-secondary btn-lg"
+                    onClick={onEditTeam}
+                    style={{ background: 'var(--bg-secondary)', color: 'var(--text-main)', borderColor: 'var(--border-color)' }}
+                >
+                    ⚙️ Edit Team & Roles
                 </button>
                 <button
                     className="btn btn-secondary btn-lg"

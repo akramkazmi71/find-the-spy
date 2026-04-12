@@ -5,17 +5,23 @@ import NameEntry from './components/NameEntry';
 import WordReveal from './components/WordReveal';
 import GameControls from './components/GameControls';
 import MissionControl from './components/MissionControl';
+import SpyGuessing from './components/SpyGuessing';
 import Debriefing from './components/Debriefing';
+import TeamManagement from './components/TeamManagement';
+import WordListSetup from './components/WordListSetup';
 import { initializeGame } from './utils/gameLogic';
 import { getWordDescription } from './utils/wordDatabase';
 
 const PHASE = {
     LANDING: 'landing',
+    WORD_SETUP: 'word_setup',
     SETUP: 'setup',
     NAME_ENTRY: 'name_entry',
     BRIEFING: 'briefing', // Formerly GAME/Reveal
     MISSION: 'mission',   // Active Game
-    DEBRIEFING: 'debriefing' // End Game
+    SPY_GUESSING: 'spy_guessing', // Guess who is spy
+    DEBRIEFING: 'debriefing', // End Game
+    TEAM_MANAGEMENT: 'team_management' // Post-game edit team
 };
 
 const GAME_STATE_KEY = 'findTheSpyGameState';
@@ -55,7 +61,7 @@ function App() {
         if (!saved) return false;
         const parsed = JSON.parse(saved);
         // Allow continuing from any active game phase
-        return [PHASE.BRIEFING, PHASE.MISSION, PHASE.DEBRIEFING].includes(parsed.phase) && parsed.gameState !== null;
+        return [PHASE.BRIEFING, PHASE.MISSION, PHASE.SPY_GUESSING, PHASE.DEBRIEFING].includes(parsed.phase) && parsed.gameState !== null;
     }, []);
 
     // Save state to localStorage whenever it changes
@@ -127,6 +133,10 @@ function App() {
     };
 
     const handleEndMission = () => {
+        setPhase(PHASE.SPY_GUESSING);
+    };
+
+    const handleEndGuessing = () => {
         setPhase(PHASE.DEBRIEFING);
     };
 
@@ -137,6 +147,20 @@ function App() {
             setGameState(gameWithCooperation);
             setPhase(PHASE.BRIEFING);
         }
+    };
+
+    const handleEditTeam = () => {
+        setPhase(PHASE.TEAM_MANAGEMENT);
+    };
+
+    const handleStartManagedTeam = (players, newSpyCount, newSpiesKnowEachOther) => {
+        setPlayerCount(players.length);
+        setSpyCount(newSpyCount);
+        setSpiesKnowEachOther(newSpiesKnowEachOther);
+        const newGame = initializeGame(players, newSpyCount);
+        const gameWithCooperation = { ...newGame, spiesKnowEachOther: newSpiesKnowEachOther };
+        setGameState(gameWithCooperation);
+        setPhase(PHASE.BRIEFING);
     };
 
     const handleReset = () => {
@@ -154,11 +178,31 @@ function App() {
     return (
         <div className="app">
             <div className="container">
-                <header className="header">
+                <header className="header" style={{ position: 'relative' }}>
                     <h1 className="title">🕵️ Find the Spy</h1>
                     <p className="subtitle">
                         Can you find the spy among you?
                     </p>
+                    {phase !== PHASE.WORD_SETUP && (
+                        <button
+                            onClick={() => setPhase(PHASE.WORD_SETUP)}
+                            style={{
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                background: 'transparent',
+                                border: 'none',
+                                fontSize: '1.5rem',
+                                cursor: 'pointer',
+                                padding: '0.5rem',
+                                opacity: 0.8,
+                                transition: 'opacity 0.2s'
+                            }}
+                            title="Word Settings"
+                        >
+                            ⚙️
+                        </button>
+                    )}
                 </header>
 
                 {phase === PHASE.LANDING && (
@@ -185,14 +229,22 @@ function App() {
                     </div>
                 )}
 
+                {phase === PHASE.WORD_SETUP && (
+                    <WordListSetup onBack={() => setPhase(PHASE.LANDING)} />
+                )}
+
                 {phase === PHASE.SETUP && (
-                    <PlayerSetup onStart={handlePlayerCountSelected} />
+                    <PlayerSetup
+                        onStart={handlePlayerCountSelected}
+                        onBack={() => setPhase(PHASE.LANDING)}
+                    />
                 )}
 
                 {phase === PHASE.NAME_ENTRY && (
                     <NameEntry
                         playerCount={playerCount}
                         onComplete={handleNamesComplete}
+                        onBack={() => setPhase(PHASE.SETUP)}
                     />
                 )}
 
@@ -266,11 +318,29 @@ function App() {
                     />
                 )}
 
+                {phase === PHASE.SPY_GUESSING && gameState && (
+                    <SpyGuessing
+                        gameState={gameState}
+                        onComplete={handleEndGuessing}
+                    />
+                )}
+
                 {phase === PHASE.DEBRIEFING && gameState && (
                     <Debriefing
                         gameState={gameState}
                         onNewRound={handleNewRound}
                         onNewGame={handleStartNewGame}
+                        onEditTeam={handleEditTeam}
+                    />
+                )}
+
+                {phase === PHASE.TEAM_MANAGEMENT && gameState && (
+                    <TeamManagement
+                        initialPlayers={gameState.players}
+                        initialSpyCount={spyCount}
+                        initialSpiesKnowEachOther={spiesKnowEachOther}
+                        onStart={handleStartManagedTeam}
+                        onCancel={() => setPhase(PHASE.DEBRIEFING)}
                     />
                 )}
 
