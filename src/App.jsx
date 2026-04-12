@@ -214,6 +214,17 @@ function App() {
                                 aria-label="Open word settings"
                             >
                                 ⚙️
+                                <span style={{
+                                    display: 'block',
+                                    fontSize: '0.6rem',
+                                    fontWeight: 600,
+                                    letterSpacing: '0.03em',
+                                    color: 'var(--text-muted)',
+                                    marginTop: '2px',
+                                    lineHeight: 1
+                                }}>
+                                    Word Lists
+                                </span>
                             </button>
                         )}
                     </div>
