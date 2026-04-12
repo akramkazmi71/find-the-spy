@@ -194,31 +194,29 @@ function App() {
     return (
         <div className="app">
             <div className="container">
-                <header className="header" style={{ position: 'relative' }}>
-                    <h1 className="title">🕵️ Find the Spy</h1>
-                    <p className="subtitle">
-                        Can you find the spy among you?
-                    </p>
-                    {phase !== PHASE.WORD_SETUP && (
-                        <button
-                            onClick={() => setPhase(PHASE.WORD_SETUP)}
-                            style={{
-                                position: 'absolute',
-                                top: '10px',
-                                right: '10px',
-                                background: 'transparent',
-                                border: 'none',
-                                fontSize: '1.5rem',
-                                cursor: 'pointer',
-                                padding: '0.5rem',
-                                opacity: 0.8,
-                                transition: 'opacity 0.2s'
-                            }}
-                            title="Word Settings"
-                        >
-                            ⚙️
-                        </button>
-                    )}
+                <header className="app-header">
+                    {/* left slot – intentionally empty to balance the grid */}
+                    <div className="header-slot header-slot-left" />
+
+                    {/* center: title + subtitle */}
+                    <div className="header-center">
+                        <h1 className="title">🕵️ Find the Spy</h1>
+                        <p className="subtitle">Can you find the spy among you?</p>
+                    </div>
+
+                    {/* right slot: settings icon */}
+                    <div className="header-slot header-slot-right">
+                        {phase !== PHASE.WORD_SETUP && (
+                            <button
+                                className="header-icon-btn"
+                                onClick={() => setPhase(PHASE.WORD_SETUP)}
+                                title="Word Settings"
+                                aria-label="Open word settings"
+                            >
+                                ⚙️
+                            </button>
+                        )}
+                    </div>
                 </header>
 
                 {phase === PHASE.LANDING && (
