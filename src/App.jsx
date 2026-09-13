@@ -173,6 +173,7 @@ function App() {
         setPlayerCount(players.length);
         setSpyCount(newSpyCount);
         setSpiesKnowEachOther(newSpiesKnowEachOther);
+        setNames(players);
         const newGame = initializeGame(players, newSpyCount);
         const gameWithCooperation = { ...newGame, spiesKnowEachOther: newSpiesKnowEachOther };
         setGameState(gameWithCooperation);
@@ -342,6 +343,7 @@ function App() {
 
                         <GameControls
                             onNewRound={handleNewRound}
+                            onEditTeam={handleEditTeam}
                             onReset={handleReset}
                             gameState={gameState}
                         />

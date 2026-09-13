@@ -6,11 +6,17 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
     const [spiesKnowEachOther, setSpiesKnowEachOther] = useState(initialSpiesKnowEachOther);
     const [newName, setNewName] = useState('');
 
+    const handleNameChange = (index, val) => {
+        const newPlayers = [...players];
+        newPlayers[index] = val;
+        setPlayers(newPlayers);
+    };
+
     const handleRemove = (index) => {
         const newPlayers = players.filter((_, i) => i !== index);
         setPlayers(newPlayers);
         if (spyCount > newPlayers.length) {
-            setSpyCount(Math.min(3, newPlayers.length));
+            setSpyCount(Math.max(1, Math.min(3, newPlayers.length - 1 || 1)));
         }
     };
 
@@ -24,22 +30,31 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
     };
 
     const handleStart = () => {
-        if (players.length >= 3) {
-            onStart(players, spyCount, spiesKnowEachOther);
+        // Clean names: trim spaces and fallback to default if blank
+        const cleanedPlayers = players.map((p, idx) => p.trim() || `Player ${idx + 1}`);
+        if (cleanedPlayers.length >= 3) {
+            onStart(cleanedPlayers, spyCount, spiesKnowEachOther);
         }
     };
 
     return (
-        <div className="card" style={{ animation: 'fadeInUp 0.6s ease' }}>
-            <h2 className="title">Manage Team</h2>
+        <div className="card" style={{ animation: 'fadeInUp 0.4s ease', maxWidth: '560px', margin: '0 auto' }}>
+            <h2 className="title" style={{ marginBottom: '0.25rem' }}>👥 Manage Roster</h2>
+            <p className="subtitle" style={{ marginBottom: '1.5rem' }}>
+                Add, remove, or edit players for the next round
+            </p>
 
-            <form onSubmit={handleAdd} style={{ marginBottom: 'var(--spacing-lg)' }}>
+            {/* Add New Player Input */}
+            <form onSubmit={handleAdd} style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                    ➕ ADD A NEW PLAYER
+                </label>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <input
                         type="text"
                         className="input-field"
                         style={{ flex: 1, marginBottom: 0 }}
-                        placeholder="Enter player name..."
+                        placeholder="Enter name (e.g. Alex)..."
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                         maxLength={20}
@@ -49,118 +64,192 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                         type="submit"
                         className="btn btn-primary"
                         disabled={!newName.trim() || players.length >= 20}
-                        style={{ padding: '0 1rem', minWidth: '100px' }}
+                        style={{ padding: '0 1.25rem', minWidth: '90px' }}
                     >
-                        Add
+                        + Add
                     </button>
                 </div>
             </form>
 
-            <div style={{
-                maxHeight: '300px',
-                overflowY: 'auto',
-                marginBottom: 'var(--spacing-xl)',
-                background: 'var(--bg-secondary)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1rem',
-                border: '1px solid var(--border-color)'
-            }}>
-                {players.length === 0 ? (
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No players remaining.</p>
-                ) : (
-                    players.map((name, index) => (
-                        <div key={index} style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '0.5rem',
-                            borderBottom: index < players.length - 1 ? '1px solid var(--border-color)' : 'none'
-                        }}>
-                            <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{name}</span>
-                            <button
-                                onClick={() => handleRemove(index)}
+            {/* Active Roster List */}
+            <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                        CURRENT PLAYERS ({players.length})
+                    </label>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                        Click name to edit
+                    </span>
+                </div>
+
+                <div style={{
+                    maxHeight: '320px',
+                    overflowY: 'auto',
+                    background: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '0.75rem',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem'
+                }}>
+                    {players.length === 0 ? (
+                        <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '1.5rem 0' }}>
+                            No players remaining. Add at least 3 players.
+                        </p>
+                    ) : (
+                        players.map((name, index) => (
+                            <div
+                                key={index}
                                 style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    color: 'var(--danger)',
-                                    cursor: 'pointer',
-                                    fontSize: '1.25rem',
-                                    padding: '0.25rem 0.5rem'
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    background: 'var(--bg-app)',
+                                    padding: '0.35rem 0.6rem',
+                                    borderRadius: 'var(--radius-sm)',
+                                    border: '1px solid var(--border-color)'
                                 }}
                             >
-                                ❌
-                            </button>
-                        </div>
-                    ))
-                )}
+                                <span style={{
+                                    fontSize: '0.8rem',
+                                    fontWeight: 700,
+                                    color: 'var(--primary)',
+                                    minWidth: '1.75rem',
+                                    textAlign: 'center'
+                                }}>
+                                    #{index + 1}
+                                </span>
+
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    style={{
+                                        flex: 1,
+                                        marginBottom: 0,
+                                        padding: '0.4rem 0.6rem',
+                                        fontSize: '0.95rem',
+                                        background: 'var(--bg-surface)'
+                                    }}
+                                    value={name}
+                                    onChange={(e) => handleNameChange(index, e.target.value)}
+                                    placeholder={`Player ${index + 1} name`}
+                                    maxLength={20}
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemove(index)}
+                                    title="Remove Player"
+                                    aria-label={`Remove player ${name || index + 1}`}
+                                    style={{
+                                        background: 'rgba(239, 68, 68, 0.1)',
+                                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                                        borderRadius: 'var(--radius-sm)',
+                                        color: 'var(--danger)',
+                                        cursor: 'pointer',
+                                        fontSize: '1rem',
+                                        padding: '0.35rem 0.55rem',
+                                        lineHeight: 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                >
+                                    🗑️
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
 
-            <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                <h3 style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>Number of Spies</h3>
+            {/* Game Settings: Spy Count */}
+            <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                    NUMBER OF SPIES
+                </label>
                 <div className="grid-selector" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-                    {[1, 2, 3].map(num => (
-                        <button
-                            key={num}
-                            type="button"
-                            className={`grid-btn ${spyCount === num ? 'selected' : ''}`}
-                            onClick={() => {
-                                setSpyCount(num);
-                                if (num === 1) setSpiesKnowEachOther(false);
-                            }}
-                            disabled={num > players.length}
-                            style={{ minWidth: '60px', padding: '0.5rem', opacity: num > players.length ? 0.3 : 1 }}
-                        >
-                            {num}
-                        </button>
-                    ))}
+                    {[1, 2, 3].map(num => {
+                        const isDisabled = num >= players.length;
+                        return (
+                            <button
+                                key={num}
+                                type="button"
+                                className={`grid-btn ${spyCount === num ? 'selected' : ''}`}
+                                onClick={() => {
+                                    setSpyCount(num);
+                                    if (num === 1) setSpiesKnowEachOther(false);
+                                }}
+                                disabled={isDisabled}
+                                style={{ minWidth: '60px', padding: '0.5rem', opacity: isDisabled ? 0.3 : 1 }}
+                            >
+                                {num} {num === 1 ? 'Spy' : 'Spies'}
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {spyCount > 1 && (
-                    <div style={{
-                        marginTop: '1rem',
-                        padding: '1rem',
-                        background: 'var(--bg-surface)',
-                        borderRadius: 'var(--radius-md)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        cursor: 'pointer',
-                        border: spiesKnowEachOther ? '2px solid var(--primary)' : '2px solid transparent'
-                    }}
+                    <div
+                        style={{
+                            marginTop: '0.75rem',
+                            padding: '0.75rem 1rem',
+                            background: 'var(--bg-surface)',
+                            borderRadius: 'var(--radius-md)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                            cursor: 'pointer',
+                            border: spiesKnowEachOther ? '2px solid var(--primary)' : '1px solid var(--border-color)'
+                        }}
                         onClick={() => setSpiesKnowEachOther(!spiesKnowEachOther)}
                     >
                         <input
                             type="checkbox"
                             checked={spiesKnowEachOther}
                             onChange={() => { }}
-                            style={{ cursor: 'pointer', width: '20px', height: '20px', opacity: 0, position: 'absolute' }}
+                            style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                         />
                         <span style={{
                             fontWeight: 600,
                             color: spiesKnowEachOther ? 'var(--primary)' : 'var(--text-main)',
-                            fontSize: '1.1rem'
+                            fontSize: '0.95rem'
                         }}>
                             Spies know each other
                         </span>
                     </div>
                 )}
+
                 {players.length < 3 && (
-                    <p style={{ color: 'var(--danger)', marginTop: '0.5rem', textAlign: 'center', fontSize: '0.875rem' }}>
-                        Need at least 3 players to start.
-                    </p>
+                    <div style={{
+                        marginTop: '0.75rem',
+                        padding: '0.5rem 0.75rem',
+                        background: 'rgba(239, 68, 68, 0.15)',
+                        border: '1px solid var(--danger)',
+                        borderRadius: 'var(--radius-sm)',
+                        color: 'var(--danger)',
+                        textAlign: 'center',
+                        fontSize: '0.875rem',
+                        fontWeight: 600
+                    }}>
+                        ⚠️ Need at least 3 players to start a game.
+                    </div>
                 )}
             </div>
 
-            <div className="btn-group">
+            {/* Navigation / Action buttons */}
+            <div className="btn-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <button
                     type="button"
                     className="btn btn-primary btn-lg"
                     onClick={handleStart}
                     disabled={players.length < 3}
-                    style={{ width: '100%', opacity: players.length < 3 ? 0.5 : 1 }}
+                    style={{ width: '100%', opacity: players.length < 3 ? 0.5 : 1, fontSize: '1.1rem' }}
                 >
-                    Start Next Round
+                    🚀 Start Next Round ({players.length} Players)
                 </button>
                 <button
                     type="button"
@@ -168,9 +257,10 @@ export default function TeamManagement({ initialPlayers, initialSpyCount, initia
                     onClick={onCancel}
                     style={{ width: '100%' }}
                 >
-                    Back
+                    ← Back
                 </button>
             </div>
         </div>
     );
 }
+

@@ -2,7 +2,7 @@ import React from 'react';
 import { getUsedWords, resetUsedWords } from '../utils/gameLogic';
 import { wordDatabase } from '../utils/wordDatabase';
 
-export default function GameControls({ onNewRound, onReset, gameState }) {
+export default function GameControls({ onNewRound, onEditTeam, onReset, gameState }) {
     const [usedWordsCount, setUsedWordsCount] = React.useState(getUsedWords().length);
     const totalWords = wordDatabase.length;
     const remainingWords = totalWords - usedWordsCount;
@@ -42,12 +42,17 @@ export default function GameControls({ onNewRound, onReset, gameState }) {
                 </div>
             </div>
 
-            <div className="btn-group" style={{ flexDirection: 'column', gap: '1rem', display: 'flex' }}>
+            <div className="btn-group" style={{ flexDirection: 'column', gap: '0.75rem', display: 'flex' }}>
                 <button className="btn btn-primary btn-lg" onClick={onNewRound}>
-                    🎲 New Round
+                    🎲 Play Next Round
                 </button>
+                {onEditTeam && (
+                    <button className="btn btn-secondary btn-lg" onClick={onEditTeam}>
+                        👥 Manage Players (Add / Remove)
+                    </button>
+                )}
                 <button className="btn btn-secondary btn-lg" onClick={onReset}>
-                    🔄 New Game
+                    🔄 Start Fresh Game
                 </button>
                 <button className="btn btn-danger btn-sm" onClick={handleResetWords} style={{ marginTop: '0.5rem' }}>
                     Reset Word History

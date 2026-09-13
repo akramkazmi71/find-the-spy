@@ -140,35 +140,80 @@ export function selectSpies(players, count = 1) {
 }
 
 /**
- * Randomly select a starting player from the list of players
+ * Randomly select a starting player from the list of players.
+ * Non-spy players are favored ~90% of the time to prevent spies from starting too frequently,
+ * while maintaining a small ~10% chance for a spy to start for occasional surprise.
  */
-export function selectStartingPlayer(players) {
+export function selectStartingPlayer(players, spyIndices = []) {
     if (!players || players.length === 0) {
-        return null;
+        return 0;
     }
-    // Use crypto for better randomness
+
+    const indices = Array.from({ length: players.length }, (_, i) => i);
+    const nonSpyIndices = indices.filter(i => !spyIndices.includes(i));
+
+    // Default pool is all players
+    let pool = indices;
+
+    if (nonSpyIndices.length > 0) {
+        // Roll 0-99 using crypto
+        const rollArray = new Uint32Array(1);
+        crypto.getRandomValues(rollArray);
+        const roll = rollArray[0] % 100;
+
+        // 90% of the time, select strictly from non-spy players
+        if (roll < 90) {
+            pool = nonSpyIndices;
+        }
+    }
+
     const array = new Uint32Array(1);
     crypto.getRandomValues(array);
-    const randomIndex = array[0] % players.length;
-    return randomIndex;
+    const randomIndexInPool = array[0] % pool.length;
+    return pool[randomIndexInPool];
 }
 
 /**
- * Initialize a new game with players
- * Returns game state with word, spy indices, and starting player
+ * Determines whether the "Surprise Double Agent" twist should activate.
+ * Only triggers when the player chose 1 spy and there are enough players.
+ * Probability: ~10% (1 in 10 games).
+ * Returns true if the twist should fire.
+ */
+function shouldActivateSurpriseTwist(players, chosenSpyCount) {
+    // Only applies when players opted for exactly 1 spy
+    // and there are at least 7 players (so 2 spies doesn't dominate a small group)
+    if (chosenSpyCount !== 1 || players.length < 7) return false;
+
+    const roll = new Uint32Array(1);
+    crypto.getRandomValues(roll);
+    // ~10% chance (0-9 out of 0-99)
+    return (roll[0] % 100) < 10;
+}
+
+/**
+ * Initialize a new game with players.
+ * Returns game state with word, spy indices, and starting player.
+ * May secretly activate the "Surprise Double Agent" twist (~10% chance when 1 spy chosen).
  */
 export function initializeGame(players, spyCount = 1) {
     const word = selectRandomWord();
-    const spyIndices = selectSpies(players, spyCount);
-    const startingPlayerIndex = selectStartingPlayer(players);
 
-    // Note: Spy starting restriction removed as per user request to make it unpredictable.
+    // Surprise twist: secretly assign 2 spies even though players chose 1
+    const surpriseTwistActive = shouldActivateSurpriseTwist(players, spyCount);
+    const effectiveSpyCount = surpriseTwistActive ? 2 : spyCount;
+
+    const spyIndices = selectSpies(players, effectiveSpyCount);
+    const startingPlayerIndex = selectStartingPlayer(players, spyIndices);
 
     return {
         word,
         spyIndices,
         startingPlayerIndex,
         players,
-        revealedPlayers: []
+        revealedPlayers: [],
+        // Track whether this round was a surprise twist for Debriefing reveal
+        surpriseTwistActive,
+        // The spy count players originally chose (for context in debriefing)
+        chosenSpyCount: spyCount,
     };
 }
